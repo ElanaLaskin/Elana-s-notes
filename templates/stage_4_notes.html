@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block toc %}
+<head>
+    <title>Elana's Notes</title>
+    <link rel="stylesheet" type="text/css" href="css/note_style.css">
+</head>
+
+<body>
+	<div class = "table-of-contents">
+    	<h2>Table of Contents</h2>
+   		<ul>
+   			{% for lesson in master_list %}
+   				<li><a href="#{{ lesson.anchor }}">{{ lesson.header }}</a></li>
+   			{% endfor %}
+   		</ul>
+   	</div>
+</body>
+{% endblock %}
+
+{% block content %}
+<body>
+	<div class = "content">
+		{% for lesson in master_list %}
+  		<div class = "section">
+  			<h2 id="{{ lesson.anchor }}">{{ lesson.header }}</h2>
+        {% if lesson.anchor != 'submit_comments' %}
+          <ul>
+            {% for bullet in lesson.bullets %}
+  						<li>{{ bullet }}</li>
+  					{% endfor %}
+				  </ul>
+        {% else %}
+          <span id="error">{{ error }}<br></span>
+          {% for info in info_list %}
+            {{ info.date.strftime('(%D)')|escape }}
+            <div class = "user_comments">
+              {{ info.comment| escape }}
+            </div>
+            <br>
+          {% endfor %}
+          <hr>
+          <br>
+          <form action="/" method="post">
+            <label><id='submit_comments'></label><br><textarea name="comment" rows="3" cols="60"></textarea>
+            <div><input type="submit" value="Submit Comment"></div>
+          </form>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</body>
+{% endblock %}
+
